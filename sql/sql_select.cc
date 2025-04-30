@@ -909,7 +909,7 @@ void remove_redundant_subquery_clauses(st_select_lex *subq_select_lex)
   }
 
   /*
-    TODO: This would prevent processing quries with ORDER BY ... LIMIT
+    TODO: This would prevent processing queries with ORDER BY ... LIMIT
     therefore we disable this optimization for now.
     Remove GROUP BY if there are no aggregate functions and no HAVING
     clause
@@ -21807,8 +21807,8 @@ TABLE *Create_tmp_table::start(THD *thd,
   else
   {
     /* if we run out of slots or we are not using tempool */
-    sprintf(path, "%s-%s-%lx-%llx-%x", tmp_file_prefix, param->tmp_name,
-            current_pid, thd->thread_id, thd->tmp_table++);
+    LEX_STRING tmp= {path, sizeof(path) };
+    make_tmp_table_name(thd, &tmp, param->tmp_name);
   }
 
   /*
@@ -22172,8 +22172,6 @@ bool Create_tmp_table::choose_engine(THD *thd, TABLE *table,
   */
 
   if (share->blob_fields || m_using_unique_constraint ||
-      (thd->variables.big_tables &&
-       !(m_select_options & SELECT_SMALL_RESULT)) ||
       (m_select_options & TMP_TABLE_FORCE_MYISAM) ||
       thd->variables.tmp_memory_table_size == 0)
   {

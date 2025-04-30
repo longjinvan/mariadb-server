@@ -448,7 +448,6 @@ bool my_yyoverflow(short **a, YYSTYPE **b, size_t *yystacksize);
 /*
   Reserved keywords
 */
-%token  <kwd> ACCESSIBLE_SYM
 %token  <kwd> ADD                           /* SQL-2003-R */
 %token  <kwd> ALL                           /* SQL-2003-R */
 %token  <kwd> ALTER                         /* SQL-2003-R */
@@ -661,7 +660,6 @@ bool my_yyoverflow(short **a, YYSTYPE **b, size_t *yystacksize);
 %token  <kwd> SELECT_SYM                    /* SQL-2003-R */
 %token  <kwd> SENSITIVE_SYM                 /* FUTURE-USE */
 %token  <kwd> SEPARATOR_SYM
-%token  <kwd> SERVER_OPTIONS
 %token  <kwd> SET                           /* SQL-2003-R */
 %token  <kwd> SHOW
 %token  <kwd> SIGNAL_SYM                    /* SQL-2003-R */
@@ -684,7 +682,6 @@ bool my_yyoverflow(short **a, YYSTYPE **b, size_t *yystacksize);
 %token  <kwd> STRAIGHT_JOIN
 %token  <kwd> SUM_SYM                       /* SQL-2003-N */
 %token  <kwd> SYSDATE
-%token  <kwd> TABLE_REF_PRIORITY
 %token  <kwd> TABLE_SYM                     /* SQL-2003-R */
 %token  <kwd> TERMINATED
 %token  <kwd> THEN_SYM                      /* SQL-2003-R */
@@ -767,7 +764,6 @@ bool my_yyoverflow(short **a, YYSTYPE **b, size_t *yystacksize);
 %token  <kwd>  AT_SYM                        /* SQL-2003-R */
 %token  <kwd>  ATOMIC_SYM                    /* SQL-2003-R */
 %token  <kwd>  AUTHORS_SYM
-%token  <kwd>  AUTOEXTEND_SIZE_SYM
 %token  <kwd>  AUTO_INC
 %token  <kwd>  AUTO_SYM
 %token  <kwd>  AVG_ROW_LENGTH
@@ -829,7 +825,6 @@ bool my_yyoverflow(short **a, YYSTYPE **b, size_t *yystacksize);
 %token  <kwd>  CURRENT_POS_SYM
 %token  <kwd>  CURSOR_NAME_SYM               /* SQL-2003-N */
 %token  <kwd>  CYCLE_SYM
-%token  <kwd>  DATAFILE_SYM
 %token  <kwd>  DATA_SYM                      /* SQL-2003-N */
 %token  <kwd>  DATETIME
 %token  <kwd>  DATE_SYM                      /* SQL-2003-R, Oracle-R, PLSQL-R */
@@ -908,7 +903,6 @@ bool my_yyoverflow(short **a, YYSTYPE **b, size_t *yystacksize);
 %token  <kwd>  IMPORT
 %token  <kwd>  INCREMENT_SYM
 %token  <kwd>  INDEXES
-%token  <kwd>  INITIAL_SIZE_SYM
 %token  <kwd>  INSERT_METHOD
 %token  <kwd>  INSTALL_SYM
 %token  <kwd>  INVOKER_SYM
@@ -931,7 +925,6 @@ bool my_yyoverflow(short **a, YYSTYPE **b, size_t *yystacksize);
 %token  <kwd>  LOCAL_SYM                     /* SQL-2003-R */
 %token  <kwd>  LOCKED_SYM
 %token  <kwd>  LOCKS_SYM
-%token  <kwd>  LOGFILE_SYM
 %token  <kwd>  LOGS_SYM
 %token  <kwd>  MASTER_CONNECT_RETRY_SYM
 %token  <kwd>  MASTER_DELAY_SYM
@@ -959,7 +952,6 @@ bool my_yyoverflow(short **a, YYSTYPE **b, size_t *yystacksize);
 %token  <kwd>  MAX_CONNECTIONS_PER_HOUR
 %token  <kwd>  MAX_QUERIES_PER_HOUR
 %token  <kwd>  MAX_ROWS
-%token  <kwd>  MAX_SIZE_SYM
 %token  <kwd>  MAX_UPDATES_PER_HOUR
 %token  <kwd>  MAX_STATEMENT_TIME_SYM
 %token  <kwd>  MAX_USER_CONNECTIONS_SYM
@@ -994,7 +986,6 @@ bool my_yyoverflow(short **a, YYSTYPE **b, size_t *yystacksize);
 %token  <kwd>  NO_SYM                        /* SQL-2003-R */
 %token  <kwd>  NOMAXVALUE_SYM
 %token  <kwd>  NOMINVALUE_SYM
-%token  <kwd>  NO_WAIT_SYM
 %token  <kwd>  NOWAIT_SYM
 %token  <kwd>  NUMBER_MARIADB_SYM            /* SQL-2003-N  */
 %token  <kwd>  NUMBER_ORACLE_SYM             /* Oracle-R, PLSQL-R */
@@ -1043,8 +1034,6 @@ bool my_yyoverflow(short **a, YYSTYPE **b, size_t *yystacksize);
 %token  <kwd>  READ_ONLY_SYM
 %token  <kwd>  REBUILD_SYM
 %token  <kwd>  RECOVER_SYM
-%token  <kwd>  REDOFILE_SYM
-%token  <kwd>  REDO_BUFFER_SIZE_SYM
 %token  <kwd>  REDUNDANT_SYM
 %token  <kwd>  RELAY
 %token  <kwd>  RELAYLOG_SYM
@@ -1061,7 +1050,6 @@ bool my_yyoverflow(short **a, YYSTYPE **b, size_t *yystacksize);
 %token  <kwd>  RESET_SYM
 %token  <kwd>  RESTART_SYM
 %token  <kwd>  RESOURCES
-%token  <kwd>  RESTORE_SYM
 %token  <kwd>  RESUME_SYM
 %token  <kwd>  RETURNED_SQLSTATE_SYM         /* SQL-2003-N */
 %token  <kwd>  RETURNS_SYM                   /* SQL-2003-R */
@@ -1150,12 +1138,9 @@ bool my_yyoverflow(short **a, YYSTYPE **b, size_t *yystacksize);
 %token  <kwd>  TRIM_ORACLE
 %token  <kwd>  TRUNCATE_SYM
 %token  <kwd>  TYPE_SYM                      /* SQL-2003-N */
-%token  <kwd>  UDF_RETURNS_SYM
 %token  <kwd>  UNBOUNDED_SYM                 /* SQL-2011-N */
 %token  <kwd>  UNCOMMITTED_SYM               /* SQL-2003-N */
 %token  <kwd>  UNDEFINED_SYM
-%token  <kwd>  UNDOFILE_SYM
-%token  <kwd>  UNDO_BUFFER_SIZE_SYM
 %token  <kwd>  UNICODE_SYM
 %token  <kwd>  UNINSTALL_SYM
 %token  <kwd>  UNKNOWN_SYM                   /* SQL-2003-R */
@@ -1199,7 +1184,7 @@ bool my_yyoverflow(short **a, YYSTYPE **b, size_t *yystacksize);
 
 %left   PREC_BELOW_NOT
 
-/* The precendence of boolean NOT is in fact here. See the comment below. */
+/* The precedence of boolean NOT is in fact here. See the comment below. */
 
 %left   '=' EQUAL_SYM GE '>' LE '<' NE
 %nonassoc IS
@@ -1253,7 +1238,7 @@ bool my_yyoverflow(short **a, YYSTYPE **b, size_t *yystacksize);
 
   - SYSTEM: identifier, system versioning:
       SELECT system FROM t1;
-      ALTER TABLE DROP SYSTEM VERSIONIONG;
+      ALTER TABLE DROP SYSTEM VERSIONING;
 
   - USER: identifier, user:
       SELECT user FROM t1;
@@ -5879,7 +5864,7 @@ create_table_option:
             Lex->create_info.used_fields|= HA_CREATE_USED_INDEXDIR;
           }
         | TABLESPACE ident
-          { /* Compatiblity with MySQL */ }
+          { /* Compatibility with MySQL */ }
         | STORAGE_SYM DISK_SYM
           {Lex->create_info.storage_media= HA_SM_DISK;}
         | STORAGE_SYM MEMORY_SYM
@@ -7447,7 +7432,7 @@ alter:
           {
             if (likely(!Lex->m_sql_cmd))
             {
-              /* Create a generic ALTER TABLE statment. */
+              /* Create a generic ALTER TABLE statement. */
               Lex->m_sql_cmd= new (thd->mem_root) Sql_cmd_alter_table();
               if (unlikely(Lex->m_sql_cmd == NULL))
                 MYSQL_YYABORT;
@@ -7534,7 +7519,7 @@ alter:
               MYSQL_YYABORT;
             /*
               It is safe to use Lex->spname because
-              ALTER EVENT xxx RENATE TO yyy DO ALTER EVENT RENAME TO
+              ALTER EVENT xxx RENAME TO yyy DO ALTER EVENT RENAME TO
               is not allowed. Lex->spname is used in the case of RENAME TO
               If it had to be supported spname had to be added to
               Event_parse_data.
@@ -7601,7 +7586,7 @@ alter:
           }
           sequence_defs
           {
-            /* Create a generic ALTER SEQUENCE statment. */
+            /* Create a generic ALTER SEQUENCE statement. */
             Lex->m_sql_cmd= new (thd->mem_root) Sql_cmd_alter_sequence($3);
             if ((Lex->create_info.seq_create_info->used_fields &
                  seq_field_used_as) &&
@@ -10158,7 +10143,7 @@ trim_operands_special:
   - the collation of the column `a`, or
   - the collation of the string literal 'a'
 
-  This restriction allows to parse the above query unambiguiusly:
+  This restriction allows to parse the above query unambiguously:
   COLLATE belongs to the column rather than the literal.
   If one needs COLLATE to belong to the literal, parentheses must be used:
     CREATE TABLE t1 (a TEXT DEFAULT ('a' COLLATE latin1_bin));
@@ -13248,7 +13233,7 @@ procedure_clause:
             /*
               PROCEDURE CLAUSE cannot handle subquery as one of its parameter,
               so disallow any subqueries further.
-              Alow subqueries back once the parameters are reduced.
+              Allow subqueries back once the parameters are reduced.
             */
             Lex->clause_that_disallows_subselect= "PROCEDURE";
             Select->options|= OPTION_PROCEDURE_CLAUSE;
@@ -14662,7 +14647,7 @@ show_param:
           }
         | describe_command opt_format_json FOR_SYM expr
           /*
-            The alternaltive syntax for this command is MySQL-compatible
+            The alternative syntax for this command is MySQL-compatible
             EXPLAIN FOR CONNECTION
           */
           {
@@ -16260,7 +16245,6 @@ keyword_sp_var_not_label:
         | PREPARE_SYM
         | REMOVE_SYM
         | RESET_SYM
-        | RESTORE_SYM
         | SECURITY_SYM
         | SERVER_SYM
         | SOCKET_SYM
@@ -16306,7 +16290,7 @@ keyword_sp_var_not_label:
   In case if heavy grammar conflicts are found in the future,
   we'll possibly need to make them reserved for sql_mode=ORACLE.
 
-  TODO: Allow these variables as SP lables when sql_mode=ORACLE.
+  TODO: Allow these variables as SP labels when sql_mode=ORACLE.
   TODO: Allow assigning of "SP characteristics" marked variables
         inside compound blocks.
   TODO: Allow "follows" and "precedes" as variables in compound blocks:
@@ -16411,7 +16395,6 @@ keyword_func_sp_var_and_label:
         | ATOMIC_SYM
         | AUTHORS_SYM
         | AUTO_INC
-        | AUTOEXTEND_SIZE_SYM
         | AUTO_SYM
         | AVG_ROW_LENGTH
         | BLOCK_SYM
@@ -16452,7 +16435,6 @@ keyword_func_sp_var_and_label:
         | CYCLE_SYM
         | DATA_SYM
         | DATABASE
-        | DATAFILE_SYM
         | DEFINER_SYM
         | DELAY_KEY_WRITE_SYM
         | DES_KEY_FILE
@@ -16506,7 +16488,6 @@ keyword_func_sp_var_and_label:
         | INVOKER_SYM
         | IMPORT
         | INDEXES
-        | INITIAL_SIZE_SYM
         | IO_SYM
         | IPC_SYM
         | ISOLATION
@@ -16523,7 +16504,6 @@ keyword_func_sp_var_and_label:
         | LIST_SYM
         | LOCKED_SYM
         | LOCKS_SYM
-        | LOGFILE_SYM
         | LOGS_SYM
         | MAX_ROWS
         | MASTER_SYM
@@ -16550,7 +16530,6 @@ keyword_func_sp_var_and_label:
         | MASTER_SSL_KEY_SYM
         | MAX_CONNECTIONS_PER_HOUR
         | MAX_QUERIES_PER_HOUR
-        | MAX_SIZE_SYM
         | MAX_STATEMENT_TIME_SYM
         | MAX_UPDATES_PER_HOUR
         | MAX_USER_CONNECTIONS_SYM
@@ -16578,7 +16557,6 @@ keyword_func_sp_var_and_label:
         | NOCYCLE_SYM
         | NOMINVALUE_SYM
         | NOMAXVALUE_SYM
-        | NO_WAIT_SYM
         | NOCOPY_SYM
         | NOWAIT_SYM
         | NODEGROUP_SYM
@@ -16617,8 +16595,6 @@ keyword_func_sp_var_and_label:
         | READ_ONLY_SYM
         | REBUILD_SYM
         | RECOVER_SYM
-        | REDO_BUFFER_SIZE_SYM
-        | REDOFILE_SYM
         | REDUNDANT_SYM
         | RELAY
         | RELAY_LOG_FILE_SYM
@@ -16690,11 +16666,8 @@ keyword_func_sp_var_and_label:
 %ifdef MARIADB
         | TYPE_SYM           %prec PREC_BELOW_CONTRACTION_TOKEN2
 %endif
-        | UDF_RETURNS_SYM
         | UNCOMMITTED_SYM
         | UNDEFINED_SYM
-        | UNDO_BUFFER_SIZE_SYM
-        | UNDOFILE_SYM
         | UNKNOWN_SYM
         | UNTIL_SYM
         | USE_FRM
@@ -16759,8 +16732,7 @@ keyword_sp_var_and_label:
 
 
 reserved_keyword_udt_not_param_type:
-          ACCESSIBLE_SYM
-        | ADD
+          ADD
         | ALL
         | ALTER
         | ANALYZE_SYM
@@ -16943,7 +16915,6 @@ reserved_keyword_udt_not_param_type:
         | SELECT_SYM
         | SENSITIVE_SYM
         | SEPARATOR_SYM
-        | SERVER_OPTIONS
         | SHOW
         | SIGNAL_SYM
         | SPATIAL_SYM
@@ -16964,7 +16935,6 @@ reserved_keyword_udt_not_param_type:
         | STRAIGHT_JOIN
         | SUBSTRING
         | SUM_SYM
-        | TABLE_REF_PRIORITY
         | TABLE_SYM
         | TERMINATED
         | THEN_SYM
@@ -19717,7 +19687,7 @@ package_implementation_declare_section:
           {
             /*
               Add a jump "end of declarations -> start of exceptions"
-              (over the executable sectition).
+              (over the executable section).
             */
             if (Lex->sp_block_with_exceptions_finalize_declarations(thd))
               MYSQL_YYABORT;
