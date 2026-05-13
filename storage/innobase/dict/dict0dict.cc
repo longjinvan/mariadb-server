@@ -654,25 +654,26 @@ retry:
     dict_sys.unfreeze();
 
   {
-    MDL_request request;
-    MDL_REQUEST_INIT(&request,MDL_key::TABLE, db_buf, tbl_buf, MDL_SHARED,
-                     MDL_EXPLICIT);
-    if (trylock
-        ? mdl_context->try_acquire_lock(&request)
-        : mdl_context->acquire_lock(&request,
-                                    /* FIXME: use compatible type, and maybe
-                                    remove this parameter altogether! */
-                                    static_cast<double>(global_system_variables
-                                                        .lock_wait_timeout)))
+    if (trylock)
     {
-      *mdl= nullptr;
-      if (trylock)
+      *mdl= mdl_context->try_acquire_lock(MDL_key::TABLE, db_buf, tbl_buf,
+                                          MDL_SHARED, MDL_EXPLICIT);
+      if (*mdl == reinterpret_cast<MDL_ticket*>(-1))
+      {
+        *mdl= nullptr;
+        return nullptr;
+      }
+      if (!*mdl)
         return nullptr;
     }
     else
     {
-      *mdl= request.ticket;
-      if (trylock && !*mdl)
+      *mdl= mdl_context->MDL_ACQUIRE_LOCK(MDL_key::TABLE, db_buf, tbl_buf,
+                                           MDL_SHARED, MDL_EXPLICIT,
+                                           static_cast<double>(
+                                             global_system_variables
+                                             .lock_wait_timeout));
+      if (!*mdl)
         return nullptr;
     }
   }
@@ -1091,17 +1092,14 @@ bool dict_stats::open(THD *thd) noexcept
   mdl_context= &thd->mdl_context;
   /* FIXME: use compatible type, and maybe remove this parameter altogether! */
   const double timeout= double(global_system_variables.lock_wait_timeout);
-  MDL_request request;
-  MDL_REQUEST_INIT(&request, MDL_key::TABLE, "mysql", "innodb_table_stats",
-                   MDL_SHARED, MDL_EXPLICIT);
-  if (UNIV_UNLIKELY(mdl_context->acquire_lock(&request, timeout)))
+  if (!(mdl_table= mdl_context->MDL_ACQUIRE_LOCK(
+          MDL_key::TABLE, "mysql", "innodb_table_stats",
+          MDL_SHARED, MDL_EXPLICIT, timeout)))
     return true;
-  mdl_table= request.ticket;
-  MDL_REQUEST_INIT(&request, MDL_key::TABLE, "mysql", "innodb_index_stats",
-                   MDL_SHARED, MDL_EXPLICIT);
-  if (UNIV_UNLIKELY(mdl_context->acquire_lock(&request, timeout)))
+  if (!(mdl_index= mdl_context->MDL_ACQUIRE_LOCK(
+          MDL_key::TABLE, "mysql", "innodb_index_stats",
+          MDL_SHARED, MDL_EXPLICIT, timeout)))
     goto release_mdl;
-  mdl_index= request.ticket;
   table_stats= dict_table_open_on_name("mysql/innodb_table_stats", false,
                                        DICT_ERR_IGNORE_NONE);
   if (!table_stats)

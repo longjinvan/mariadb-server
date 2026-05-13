@@ -2665,6 +2665,21 @@ MDL_context::try_acquire_lock(MDL_request *mdl_request)
 }
 
 
+MDL_ticket *
+MDL_context::try_acquire_lock(MDL_key::enum_mdl_namespace mdl_namespace,
+                              const char *db, const char *name,
+                              enum_mdl_type mdl_type,
+                              enum_mdl_duration mdl_duration)
+{
+  MDL_request mdl_request;
+  MDL_REQUEST_INIT(&mdl_request, mdl_namespace, db, name, mdl_type,
+                   mdl_duration);
+  if (try_acquire_lock_impl(&mdl_request, nullptr))
+    return reinterpret_cast<MDL_ticket*>(-1);
+  return mdl_request.ticket;
+}
+
+
 /**
   Auxiliary method for acquiring lock without waiting.
 
@@ -3072,6 +3087,39 @@ MDL_context::acquire_lock(MDL_request *mdl_request, double lock_wait_timeout)
 
   DBUG_PRINT("mdl", ("Acquired: %s", ticket_msg));
   DBUG_RETURN(FALSE);
+}
+
+
+MDL_ticket *
+MDL_context::acquire_lock(MDL_key::enum_mdl_namespace mdl_namespace,
+                          const char *db, const char *name,
+                          enum_mdl_type mdl_type,
+                          enum_mdl_duration mdl_duration,
+                          double lock_wait_timeout,
+                          const char *src_file, uint src_line)
+{
+  MDL_request mdl_request;
+  mdl_request.init_with_source(mdl_namespace, db, name, mdl_type, mdl_duration,
+                               src_file, src_line);
+  if (acquire_lock(&mdl_request, lock_wait_timeout))
+    return NULL;
+  return mdl_request.ticket;
+}
+
+
+MDL_ticket *
+MDL_context::acquire_lock(const MDL_key *key,
+                          enum_mdl_type mdl_type,
+                          enum_mdl_duration mdl_duration,
+                          double lock_wait_timeout,
+                          const char *src_file, uint src_line)
+{
+  MDL_request mdl_request;
+  mdl_request.init_by_key_with_source(key, mdl_type, mdl_duration,
+                                      src_file, src_line);
+  if (acquire_lock(&mdl_request, lock_wait_timeout))
+    return NULL;
+  return mdl_request.ticket;
 }
 
 

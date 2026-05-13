@@ -1108,12 +1108,13 @@ static dict_table_t *trx_purge_table_acquire(dict_table_t *table,
     goto got_table;
 
   {
-    MDL_request request;
-    MDL_REQUEST_INIT(&request,MDL_key::TABLE, db_buf, tbl_buf, MDL_SHARED,
-                     MDL_EXPLICIT);
-    if (mdl_context->try_acquire_lock(&request))
+    *mdl= mdl_context->try_acquire_lock(MDL_key::TABLE, db_buf, tbl_buf,
+                                        MDL_SHARED, MDL_EXPLICIT);
+    if (*mdl == reinterpret_cast<MDL_ticket*>(-1))
+    {
+      *mdl= nullptr;
       goto must_wait;
-    *mdl= request.ticket;
+    }
     if (!*mdl)
       goto must_wait;
   }
