@@ -6082,7 +6082,7 @@ static Sys_var_ulong Sys_opt_binlog_rows_event_max_size(
       "grouped into events smaller than this size if possible. "
       "The value has to be a multiple of 256",
       READ_ONLY GLOBAL_VAR(opt_binlog_rows_event_max_size), CMD_LINE(REQUIRED_ARG),
-      VALID_RANGE(256, UINT_MAX32 - (UINT_MAX32 % 256)), DEFAULT(8192),
+      VALID_RANGE(256, UINT_MAX32 - (UINT_MAX32 % 256)), DEFAULT(65536),
       BLOCK_SIZE(256));
 
 static Sys_var_uint Sys_opt_binlog_partial_rows_event_max_size(
@@ -6586,7 +6586,7 @@ static Sys_var_charptr Sys_wsrep_start_position (
        CMD_LINE(REQUIRED_ARG),
        DEFAULT(WSREP_START_POSITION_ZERO),
        NO_MUTEX_GUARD, NOT_IN_BINLOG,
-       ON_CHECK(wsrep_start_position_check), 
+       ON_CHECK(wsrep_start_position_check),
        ON_UPDATE(wsrep_start_position_update));
 
 static Sys_var_ulong Sys_wsrep_max_ws_size (
@@ -6599,7 +6599,9 @@ static Sys_var_ulong Sys_wsrep_max_ws_size (
 static Sys_var_ulong Sys_wsrep_max_ws_rows (
        "wsrep_max_ws_rows", "Max number of rows in write set",
        GLOBAL_VAR(wsrep_max_ws_rows), CMD_LINE(REQUIRED_ARG),
-       VALID_RANGE(0, 1048576), DEFAULT(0), BLOCK_SIZE(1));
+       VALID_RANGE(0, 1048576), DEFAULT(0),
+       BLOCK_SIZE(1), NO_MUTEX_GUARD, NOT_IN_BINLOG,
+       ON_CHECK(wsrep_max_ws_rows_check), ON_UPDATE(0));
 
 static Sys_var_charptr Sys_wsrep_notify_cmd(
        "wsrep_notify_cmd", "",

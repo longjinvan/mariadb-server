@@ -42,6 +42,7 @@
 #ifdef WITH_WSREP
 #include "mysql/service_wsrep.h"
 #endif
+#include "item_windowfunc.h"
 
 void LEX::parse_error(uint err_number)
 {
@@ -1337,6 +1338,7 @@ void LEX::start(THD *thd_arg)
 
   wild= 0;
   exchange= 0;
+  clause_winfuncs.empty();
 
   table_count_update= 0;
   needs_reprepare= false;
@@ -7852,14 +7854,29 @@ bool LEX::sp_open_cursor_for_stmt(THD *thd, const LEX_CSTRING *name,
   }
 
   /*
+    This statement is not supported:
+        OPEN strict_cursor_variable FOR 'SELECT ...';
+    It can be rewritten:
+    - either to use a SELECT statement instead of the dynamic string:
+        OPEN strict_cursor_variable FOR SELECT ...;
+    - or to make c0 a weak cursor variable (i.e.without the RETURN clause)
+        OPEN weak_cursor_variable FOR 'SELECT ...';
+  */
+  return_type_def= dynamic_cast<const sp_type_def_ref*>(spv[0].field_def.
+                                               get_attr_const_generic_ptr(0));
+  if (return_type_def && stmt->prepared_stmt.code())
+  {
+    my_error(ER_WRONG_USAGE, MYF(0), name->str, "OPEN..FOR <dynamic string>");
+    goto error;
+  }
+
+  /*
     If the REF CURSOR declaration has the RETURN clause and
     the query select list does not have asterisks, check
     that the row sizes are equal.
     A more thorough test (field-by-field assignability) is done
     later, after the cursor has been opened.
   */
-  return_type_def= dynamic_cast<const sp_type_def_ref*>(spv[0].field_def.
-                                               get_attr_const_generic_ptr(0));
   row_def_list=
     return_type_def && return_type_def->def().is_row() ?
     return_type_def->def().row_field_definitions() : nullptr;
@@ -13814,6 +13831,37 @@ TABLE_LIST *SELECT_LEX::find_table(THD *thd,
 bool st_select_lex::is_query_topmost(THD *thd)
 {
   return get_master() == &thd->lex->unit;
+}
+
+
+void st_select_lex::optimize_out_order_list()
+{
+  /* Cleanup first related window funcs */
+  for (ORDER *ord= order_list.first; ord; ord= ord->next)
+  {
+    if (ord->window_funcs.is_empty())
+      continue;
+
+    List_iterator<Item_window_func> it_sl(window_funcs);
+    List_iterator<Item_window_func> it_ord(ord->window_funcs);
+    Item_window_func *wf_sl, *wf_ord;
+    while ((wf_sl= it_sl++))
+    {
+      it_ord.rewind();
+      while ((wf_ord= it_ord++))
+      {
+        if (wf_ord == wf_sl)
+        {
+          it_sl.remove();
+          it_ord.remove();
+          break;
+        }
+      }
+      if (ord->window_funcs.is_empty())
+        break;
+    }
+  }
+  order_list.empty();
 }
 
 
